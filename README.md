@@ -1,54 +1,6 @@
-# Welcome to Bazinga 
+# Bazinga - Campus Social Network
 
-## Project info
-
-**URL**: https://lovable.dev/projects/8e161d9a-dc2b-4bfa-941f-bac09d007eec
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/8e161d9a-dc2b-4bfa-941f-bac09d007eec) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Bazinga is the ultimate campus social platform for students to connect, share, and discover everything happening on campus.
 
 ## What technologies are used for this project?
 
@@ -59,15 +11,49 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Supabase (Backend/Auth)
+- PWA Support
 
-## How can I deploy this project?
+## Getting Started
 
-Simply open [Lovable](https://lovable.dev/projects/8e161d9a-dc2b-4bfa-941f-bac09d007eec) and click on Share -> Publish.
+### Prerequisites
 
-## Can I connect a custom domain to my Lovable project?
+- Node.js & npm installed
 
-Yes, you can!
+### Local Development
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Follow these steps to run the project locally:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```sh
+# Step 1: Clone the repository
+git clone https://github.com/devanshvpurohit/bazinga.git
+
+# Step 2: Navigate to the project directory
+cd bazinga
+
+# Step 3: Install dependencies
+npm i
+
+# Step 4: Set up environment variables
+# Copy .env.example to .env and fill in your Supabase keys
+# VITE_SUPABASE_URL=your_supabase_url
+# VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+# VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+
+# Step 5: Start the development server
+npm run dev
+```
+
+## Features
+
+- **Connect**: Find friends and networking opportunities on campus.
+- **Campus Pulse**: Stay updated with campus news, events, and announcements.
+- **AnonySpace**: Share thoughts and questions anonymously.
+- **Scholar AI**: AI-powered study assistant for generating guides and flashcards.
+- **ClubVerse**: Discover and join student clubs.
+- **Study Room**: Aesthetic focus spaces with music and tools.
+- **PWA**: Installable on mobile and desktop for a native-like experience.
+
+## License
+
+MIT

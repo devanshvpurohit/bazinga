@@ -7,7 +7,6 @@ import { useToast } from '@/hooks/use-toast';
  * Get the current app URL dynamically
  * This ensures auth redirects work correctly in all environments:
  * - localhost during development
- * - preview URLs (*.lovable.app)
  * - production/custom domains
  */
 const getAppUrl = (): string => {

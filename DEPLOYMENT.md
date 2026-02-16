@@ -6,7 +6,7 @@
 
 The app uses dynamic URL detection for authentication redirects. This means:
 - **Local development**: Redirects to `http://localhost:5173` or whichever port Vite uses
-- **Preview deploys**: Redirects to `*.lovable.app` URLs  
+- **Local development**: Redirects to `http://localhost:5173` or whichever port Vite uses
 - **Production**: Redirects to your custom domain
 
 **Important**: Configure these URLs in your Supabase Dashboard:
@@ -15,7 +15,7 @@ The app uses dynamic URL detection for authentication redirects. This means:
 2. Set **Site URL** to your production domain (e.g., `https://your-app.com`)
 3. Add **Redirect URLs**:
    - `http://localhost:5173/*` (local development)
-   - `https://*.lovable.app/*` (Lovable preview URLs)
+   - `http://localhost:5173/*` (local development)
    - `https://your-custom-domain.com/*` (production)
 
 ## 🧠 Gale-Shapley Matching Algorithm
@@ -162,8 +162,8 @@ Ensure these policies exist:
 ## 🚀 Deployment Checklist
 
 - [ ] Configure Site URL in Supabase Dashboard
-- [ ] Add all redirect URLs (local, preview, production)
-- [ ] Deploy edge functions (automatic with Lovable)
+- [ ] Add all redirect URLs (local, production)
+- [ ] Deploy edge functions (via Supabase CLI)
 - [ ] Test authentication flow on deployed URL
 - [ ] Test password reset emails arrive
 - [ ] Verify PWA installs correctly
