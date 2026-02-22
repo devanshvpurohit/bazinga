@@ -22,10 +22,33 @@ export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasProfile, setHasProfile] = useState<boolean | null>(null);
   const { toast } = useToast();
 
+  const checkProfile = async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('full_name, department, year_of_study')
+        .eq('id', userId)
+        .single();
+
+      if (data && data.full_name && data.department && data.year_of_study) {
+        setHasProfile(true);
+      } else {
+        setHasProfile(false);
+      }
+    } catch (error) {
+      setHasProfile(false);
+    }
+  };
+
+  const refreshProfile = () => {
+    if (user) checkProfile(user.id);
+  };
+
   useEffect(() => {
-    // Set up auth state listener FIRST
+    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
@@ -34,7 +57,7 @@ export const useAuth = () => {
       }
     );
 
-    // THEN check for existing session
+    // Initial session check
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -44,23 +67,7 @@ export const useAuth = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const [hasProfile, setHasProfile] = useState<boolean | null>(null);
-
   useEffect(() => {
-    const checkProfile = async (userId: string) => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('full_name, department')
-        .eq('id', userId)
-        .single();
-
-      if (data && data.full_name && data.department) {
-        setHasProfile(true);
-      } else {
-        setHasProfile(false);
-      }
-    };
-
     if (user) {
       checkProfile(user.id);
     } else {
@@ -70,27 +77,21 @@ export const useAuth = () => {
 
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      // Use dynamic URL for proper redirect in all environments
       const redirectUrl = `${getAppUrl()}/`;
-
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: redirectUrl,
-          data: {
-            full_name: fullName,
-          },
+          data: { full_name: fullName },
         },
       });
 
       if (error) throw error;
-
       toast({
         title: "Account created!",
         description: "Please check your email to verify your account.",
       });
-
       return { error: null };
     } catch (error: any) {
       toast({
@@ -104,18 +105,12 @@ export const useAuth = () => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-
       toast({
         title: "Welcome back!",
         description: "You have successfully signed in.",
       });
-
       return { error: null };
     } catch (error: any) {
       toast({
@@ -131,7 +126,6 @@ export const useAuth = () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-
       toast({
         title: "Signed out",
         description: "You have been successfully signed out.",
@@ -147,26 +141,15 @@ export const useAuth = () => {
 
   const resetPassword = async (email: string) => {
     try {
-      // Basic email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        throw new Error('Please enter a valid email address');
-      }
-
-      // Use dynamic URL for proper redirect in all environments
+      if (!emailRegex.test(email)) throw new Error('Please enter a valid email address');
       const redirectUrl = `${getAppUrl()}/auth?reset=true`;
-
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: redirectUrl,
-      });
-
+      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: redirectUrl });
       if (error) throw error;
-
       toast({
         title: "Password reset email sent",
-        description: "Please check your email for the password reset link. The link expires in 1 hour.",
+        description: "Please check your email for the password reset link.",
       });
-
       return { error: null };
     } catch (error: any) {
       toast({
@@ -180,17 +163,12 @@ export const useAuth = () => {
 
   const updatePassword = async (newPassword: string) => {
     try {
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword,
-      });
-
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
       if (error) throw error;
-
       toast({
         title: "Password updated",
         description: "Your password has been successfully updated.",
       });
-
       return { error: null };
     } catch (error: any) {
       toast({
@@ -212,5 +190,6 @@ export const useAuth = () => {
     signOut,
     resetPassword,
     updatePassword,
+    refreshProfile,
   };
 };

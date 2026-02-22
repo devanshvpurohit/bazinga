@@ -13,7 +13,7 @@ import { Sparkles, ArrowRight, User, BookOpen, GraduationCap } from 'lucide-reac
 import { getRandomQuote } from '@/utils/quotes';
 
 const Onboarding = () => {
-    const { user } = useAuth();
+    const { user, refreshProfile } = useAuth();
     const navigate = useNavigate();
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
@@ -29,7 +29,6 @@ const Onboarding = () => {
 
     useEffect(() => {
         if (user) {
-            // Pre-fill full name from auth metadata if available
             setFormData(prev => ({
                 ...prev,
                 full_name: user.user_metadata?.full_name || ''
@@ -62,6 +61,9 @@ const Onboarding = () => {
                 });
 
             if (error) throw error;
+
+            // Refresh profile state in auth context
+            refreshProfile?.();
 
             toast({
                 title: "Welcome to Bazinga! 🎉",
@@ -168,12 +170,14 @@ const Onboarding = () => {
                                 <Label className="flex items-center gap-2">
                                     <Sparkles className="h-4 w-4 text-primary" /> Bio (Short & Sweet)
                                 </Label>
-                                <Textarea
-                                    placeholder="Tell us a bit about yourself..."
-                                    value={formData.bio}
-                                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                                    className="bg-black/20 border-white/10 min-h-[120px] resize-none"
-                                />
+                                <div className="overflow-hidden">
+                                    <Textarea
+                                        placeholder="Tell us a bit about yourself..."
+                                        value={formData.bio}
+                                        onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                                        className="bg-black/20 border-white/10 min-h-[120px] resize-none"
+                                    />
+                                </div>
                             </div>
 
                             <div className="flex gap-3">
@@ -192,12 +196,12 @@ const Onboarding = () => {
                                 >
                                     {loading ? "Saving..." : "Start Exploring! 🚀"}
                                 </Button>
-                                {loading && (
-                                    <p className="text-[10px] text-center text-muted-foreground italic animate-pulse">
-                                        "{quote}"
-                                    </p>
-                                )}
                             </div>
+                            {loading && (
+                                <p className="text-[10px] text-center text-muted-foreground italic animate-pulse mt-2">
+                                    "{quote}"
+                                </p>
+                            )}
                         </div>
                     )}
                 </CardContent>
@@ -205,5 +209,6 @@ const Onboarding = () => {
         </div>
     );
 };
+
 
 export default Onboarding;
