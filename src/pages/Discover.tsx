@@ -87,7 +87,7 @@ const Discover = () => {
         const { data: others } = await supabase
             .from('profiles')
             .select('*')
-            .not('id', 'in', `(${Array.from(seenIds).join(',')})`)
+            .not('id', 'in', Array.from(seenIds))
             .eq('dating_enabled', true)
             .limit(20);
 
@@ -177,12 +177,12 @@ const Discover = () => {
                         Find students with similar interests, study partners, or maybe even your campus match.
                     </p>
                 </div>
-                <Button 
+                <Button
                     onClick={() => {
                         setSettings(s => ({ ...s, dating_enabled: true }));
                         setShowSettings(true);
-                    }} 
-                    size="lg" 
+                    }}
+                    size="lg"
                     className="btn-accent w-full max-w-xs"
                 >
                     Get Started
@@ -202,10 +202,10 @@ const Discover = () => {
                         Discover
                     </h1>
                 </div>
-                <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => setShowSettings(true)} 
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowSettings(true)}
                     className="gap-2"
                 >
                     <Settings className="h-4 w-4" />
